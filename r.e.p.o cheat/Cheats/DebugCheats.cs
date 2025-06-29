@@ -695,7 +695,8 @@ namespace r.e.p.o_cheat
                         int itemValue = 0;
                         if (!isPlayerDeathHead)
                         {
-                            var valueField = valuableObject.GetType().GetField("dollarValueCurrent", BindingFlags.Public | BindingFlags.Instance);
+                            var valueField = valuableObject.GetType().GetField("dollarValueCurrent", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
                             if (valueField != null)
                             {
                                 try
