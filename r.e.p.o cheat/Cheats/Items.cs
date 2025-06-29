@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -71,6 +71,7 @@ namespace r.e.p.o_cheat
             }
         }
 
+
         public static List<GameItem> GetItemList()
         {
             List<GameItem> itemList = new List<GameItem>();
@@ -78,7 +79,8 @@ namespace r.e.p.o_cheat
             foreach (var valuableObject in DebugCheats.valuableObjects)
             {
                 if (valuableObject == null) continue;
-
+                
+                
                 var transformProperty = valuableObject.GetType().GetProperty("transform", BindingFlags.Public | BindingFlags.Instance);
                 if (transformProperty == null)
                 {
@@ -120,9 +122,11 @@ namespace r.e.p.o_cheat
                 int itemValue = 0;
 
                 // Only check dollarValueCurrent if it's NOT PlayerDeathHead
+
                 if (valuableObject.GetType().Name != "PlayerDeathHead")
                 {
-                    var valueField = valuableObject.GetType().GetField("dollarValueCurrent", BindingFlags.Public | BindingFlags.Instance);
+                    var valueField = valuableObject.GetType().GetField("dollarValueCurrent", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
                     if (valueField != null)
                     {
                         try
@@ -131,12 +135,12 @@ namespace r.e.p.o_cheat
                         }
                         catch (Exception e)
                         {
-                            Hax2.Log1($"Error reading 'dollarValueCurrent' for '{itemName}': {e.Message}. Defaulting to 0.");
+                            Debug.Log($"Error reading 'dollarValueCurrent' for '{itemName}': {e.Message}. Defaulting to 0.");
                         }
                     }
                     else
                     {
-                        Hax2.Log1($"Info: '{itemName}' does not have 'dollarValueCurrent', assuming value 0.");
+                        Debug.Log($"Info: '{itemName}' does not have 'dollarValueCurrent', assuming value 0.");
                     }
                 }
 
@@ -303,6 +307,7 @@ namespace r.e.p.o_cheat
                 Hax2.Log1($"Erro ao teleportar item '{item.Name}': {e.Message}");
             }
         }
+
     }
     public class ItemTeleportComponent : MonoBehaviour, IPunOwnershipCallbacks
     {
