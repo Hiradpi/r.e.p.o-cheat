@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -136,7 +136,7 @@ namespace r.e.p.o_cheat
             }
         }
 
-        public static void MaxStamina()
+        public static void UnlimitedStamina()
         {
             var playerControllerType = Type.GetType("PlayerController, Assembly-CSharp");
             if (playerControllerType != null)
@@ -144,26 +144,23 @@ namespace r.e.p.o_cheat
                 Hax2.Log1("PlayerController found.");
 
                 var playerControllerInstance = GameHelper.FindObjectOfType(playerControllerType);
+
                 if (playerControllerInstance != null)
                 {
-                    var energyCurrentField = playerControllerInstance.GetType().GetField("EnergyCurrent", BindingFlags.Public | BindingFlags.Instance);
-                    if (energyCurrentField != null)
+                    Debug.Log($"setting the stamina drain to 0f");
+                    var energySprintDrainField = playerControllerType.GetField("EnergySprintDrain", BindingFlags.Public | BindingFlags.Instance);
+                    if (energySprintDrainField != null)
                     {
                         if (Hax2.stamineState)
                         {
-                            energyCurrentField.SetValue(playerControllerInstance, 999999);
+                            energySprintDrainField.SetValue(playerControllerInstance, 0f);
                         }
                         else if (!Hax2.stamineState)
                         {
-                            energyCurrentField.SetValue(playerControllerInstance, 40);
+                            energySprintDrainField.SetValue(playerControllerInstance, 10f);
                         }
+                    }
 
-                        Hax2.Log1("EnergyCurrent set to " + (Hax2.stamineState ? 999999 : 40));
-                    }
-                    else
-                    {
-                        Hax2.Log1("EnergyCurrent field not found in playerAvatarScript.");
-                    }
                 }
                 else
                 {
